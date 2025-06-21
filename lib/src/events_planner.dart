@@ -165,7 +165,8 @@ class EventsPlannerState extends State<EventsPlanner> {
 
     // synchronize horizontal scroll between days events / full day events / days header
     if (widget.daysHeaderParam.daysHeaderVisibility ||
-        widget.fullDayParam.fullDayEventsBarVisibility) {
+        widget.fullDayParam.fullDayEventsBarVisibility ||
+        widget.columnsParam.columns > 0) {
       mainHorizontalController.addListener(() {
         headersHorizontalController.jumpTo(mainHorizontalController.offset);
       });
@@ -305,6 +306,7 @@ class EventsPlannerState extends State<EventsPlanner> {
       builder: (context, constraints) {
         width = constraints.maxWidth;
         height = constraints.maxHeight;
+
         var leftWidget = widget.timesIndicatorsParam.timesIndicatorsWidth;
         dayWidth = (width - leftWidget) / widget.daysShowed;
 
