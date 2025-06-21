@@ -50,6 +50,7 @@ class DayWidget extends StatelessWidget {
     var dayBackgroundColor =
         isToday && todayColor != null ? todayColor : dayParam.dayColor;
     var width = dayWidth - (daySeparationWidthPadding * 2);
+    final columnParamsWidth = getWidthFromColumnsParams(width);
     var offTimesOfDay = offTimesParam.offTimesDayRanges[day];
     var offTimesDefaultColor = context.isDarkMode
         ? Theme.of(context).colorScheme.surface.lighten(0.03)
@@ -115,7 +116,8 @@ class DayWidget extends StatelessWidget {
                 children: [
                   for (var column = 0; column < columnsParam.columns; column++)
                     SizedBox(
-                      width: columnsParam.getColumSize(width, column),
+                      width:
+                          columnsParam.getColumSize(columnParamsWidth, column),
                       height: plannerHeight,
                       child: CustomPaint(
                         foregroundPainter:
@@ -142,7 +144,7 @@ class DayWidget extends StatelessWidget {
 
             // lines painters
             SizedBox(
-              width: width,
+              width: columnParamsWidth,
               height: plannerHeight,
               child: CustomPaint(
                 foregroundPainter: dayParam.dayCustomPainter?.call(
@@ -160,7 +162,7 @@ class DayWidget extends StatelessWidget {
             // columns painters
             if (columnsParam.columns > 1)
               SizedBox(
-                width: width,
+                width: columnParamsWidth,
                 height: plannerHeight,
                 child: CustomPaint(
                   foregroundPainter: columnsParam.columnCustomPainter?.call(
@@ -214,6 +216,13 @@ class DayWidget extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  double getWidthFromColumnsParams(double width) {
+    if (columnsParam.columns <= 0) return width;
+    if (columnsParam.columnsWidthRatio?.isEmpty ?? true) return width;
+
+    return width * columnsParam.columnsWidthRatio!.first * columnsParam.columns;
   }
 
   DateTime getExactDateTime(double dy) {
