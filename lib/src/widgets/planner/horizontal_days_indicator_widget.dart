@@ -42,7 +42,6 @@ class HorizontalDaysIndicatorWidget extends StatelessWidget {
         child: SizedBox(
           height: daysHeaderParam.daysHeaderHeight,
           child: InfiniteList(
-            controller: dayHorizontalController,
             physics: const NeverScrollableScrollPhysics(),
             scrollDirection: Axis.horizontal,
             direction: InfiniteListDirection.multi,
@@ -67,7 +66,12 @@ class HorizontalDaysIndicatorWidget extends StatelessWidget {
                         if (columnsParam.columns > 1 ||
                             columnsParam.columnHeaderBuilder != null ||
                             columnsParam.columnsLabels.isNotEmpty)
-                          getColumnsHeader(context, day, isToday)
+                          SingleChildScrollView(
+                            physics: NeverScrollableScrollPhysics(),
+                            controller: dayHorizontalController,
+                            scrollDirection: Axis.horizontal,
+                            child: getColumnsHeader(context, day, isToday),
+                          )
                       ],
                     ),
                   );
