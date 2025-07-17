@@ -10,12 +10,14 @@ class VerticalTimeIndicatorWidget extends StatelessWidget {
     required this.heightPerMinute,
     required this.currentHourIndicatorHourVisibility,
     required this.currentHourIndicatorColor,
+    this.textPainterBuilder,
   });
 
   final TimesIndicatorsParam timesIndicatorsParam;
   final double heightPerMinute;
   final bool currentHourIndicatorHourVisibility;
   final Color currentHourIndicatorColor;
+  final TextPainter Function(TimeOfDay time, Color color)? textPainterBuilder;
 
   @override
   Widget build(BuildContext context) {
@@ -34,6 +36,7 @@ class VerticalTimeIndicatorWidget extends StatelessWidget {
                 halfHourColor: Theme.of(context).colorScheme.outlineVariant,
                 quarterHourColor: Theme.of(context).colorScheme.outlineVariant,
                 currentHourIndicatorColor: currentHourIndicatorColor,
+                textPainterBuilder: textPainterBuilder,
               ),
         ),
       ),
