@@ -488,6 +488,7 @@ class EventsPlannerState extends State<EventsPlanner> {
       currentHourIndicatorHourVisibility:
           widget.currentHourIndicatorParam.currentHourIndicatorHourVisibility,
       currentHourIndicatorColor: currentHourIndicatorColor,
+      textPainterBuilder: widget.timesIndicatorsParam.timeTextPainter,
     );
   }
 
