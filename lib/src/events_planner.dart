@@ -802,6 +802,7 @@ class TimesIndicatorsParam {
     this.timesIndicatorsWidth = 60.0,
     this.timesIndicatorsHorizontalPadding = 4.0,
     this.timesIndicatorsCustomPainter,
+    this.timeTextPainter,
   });
 
   /// width of left times bar
@@ -813,6 +814,9 @@ class TimesIndicatorsParam {
   /// custom times painter
   final CustomPainter Function(double heightPerMinute)?
       timesIndicatorsCustomPainter;
+
+  /// text painter for times
+  final TextPainter Function(TimeOfDay time, Color color)? timeTextPainter;
 }
 
 class ColumnsParam {
