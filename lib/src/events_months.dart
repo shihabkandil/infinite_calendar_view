@@ -180,15 +180,19 @@ class EventsMonthsState extends State<EventsMonths> {
                           initialMonth.month + index,
                         );
                         return InfiniteListItem(
-                          headerStateBuilder: (context, state) {
-                            WidgetsBinding.instance.addPostFrameCallback((_) {
-                              if (state.sticky && _stickyMonth != month) {
+                         headerStateBuilder: (context, state) {
+                            const stickyThreshold = 0.5;
+
+                            final isTopSticky = state.sticky && state.position < stickyThreshold;
+                            if (isTopSticky && _stickyMonth != month) {
+                              WidgetsBinding.instance.addPostFrameCallback((_) {
                                 _stickyMonth = month;
                                 widget.controller.updateFocusedDay(
                                     _stickyMonth);
                                 widget.onMonthChange?.call(_stickyMonth);
                               }
-                            });
+                              );
+                            }
                             _stickyPercent = state.position;
                             _stickyOffset = state.offset;
                             return SizedBox.shrink();
