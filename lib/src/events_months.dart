@@ -181,14 +181,14 @@ class EventsMonthsState extends State<EventsMonths> {
                         );
                         return InfiniteListItem(
                           headerStateBuilder: (context, state) {
-                            if (state.sticky && _stickyMonth != month) {
-                              _stickyMonth = month;
-                              Future(() {
-                                widget.controller
-                                    .updateFocusedDay(_stickyMonth);
+                            WidgetsBinding.instance.addPostFrameCallback((_) {
+                              if (state.sticky && _stickyMonth != month) {
+                                _stickyMonth = month;
+                                widget.controller.updateFocusedDay(
+                                    _stickyMonth);
                                 widget.onMonthChange?.call(_stickyMonth);
-                              });
-                            }
+                              }
+                            });
                             _stickyPercent = state.position;
                             _stickyOffset = state.offset;
                             return SizedBox.shrink();
