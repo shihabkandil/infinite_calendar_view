@@ -34,6 +34,8 @@ extension StringExtension on String {
 extension BuildContextExtension on BuildContext {
   bool get isDarkMode =>
       Theme.of(this).colorScheme.surface.computeLuminance() < 0.128;
+  
+  TextDirection get textDirection => Directionality.of(this);
 }
 
 extension ColorBrightness on Color {

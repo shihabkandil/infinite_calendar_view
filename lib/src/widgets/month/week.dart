@@ -128,7 +128,7 @@ class _WeekState extends State<Week> {
                                 eventIndex++)
                               if (eventIndex < widget.maxEventsShowed)
                                 ...getEventOrMoreEventsWidget(
-                                    dayOfWeek, eventIndex, dayWidth),
+                                    dayOfWeek, eventIndex, dayWidth,context.textDirection,),
                         ],
                       ),
                     ),
@@ -144,7 +144,15 @@ class _WeekState extends State<Week> {
 
   DateTime getPositionDay(Offset localPosition, double dayWidth) {
     var x = localPosition.dx;
-    var dayIndex = (x / dayWidth).toInt();
+    bool isRTL = context.textDirection == TextDirection.rtl;
+    int dayIndex = 0;
+    const int dayCount = 7;
+
+    if (isRTL) {
+      dayIndex = dayCount - 1 - (x / dayWidth).floor();
+    } else {
+      dayIndex = (x / dayWidth).floor();
+    }
     var day = widget.startOfWeek.add(Duration(days: dayIndex));
     return day;
   }
@@ -173,11 +181,12 @@ class _WeekState extends State<Week> {
     int dayOfWeek,
     int eventIndex,
     double dayWidth,
+    TextDirection textDirection,
   ) {
     var daySpacing = widget.weekParam.daySpacing;
     var eventSpacing = widget.daysParam.eventSpacing;
     var eventHeight = widget.daysParam.eventHeight;
-    var left = dayOfWeek * dayWidth + (daySpacing / 2);
+    var sideShift = dayOfWeek * dayWidth + (daySpacing / 2);
     var eventsLength = weekEvents[dayOfWeek]?.length ?? 0;
     var day = widget.startOfWeek.add(Duration(days: dayOfWeek));
 
@@ -187,7 +196,8 @@ class _WeekState extends State<Week> {
     if (isLastSlot && notShowedEventsCount > 1) {
       return [
         Positioned(
-          left: left,
+          left: textDirection == TextDirection.ltr ? sideShift : null,
+          right: textDirection == TextDirection.rtl ? sideShift : null,
           top: (widget.maxEventsShowed - 1) * (eventHeight + eventSpacing),
           width: dayWidth - daySpacing,
           height: eventHeight,
@@ -220,7 +230,8 @@ class _WeekState extends State<Week> {
           (eventHeight + eventSpacing);
       return [
         Positioned(
-            left: left,
+            left: textDirection == TextDirection.ltr ? sideShift : null,
+            right: textDirection == TextDirection.rtl ? sideShift : null,
             top: top,
             width: eventWidth,
             height: eventHeight,
