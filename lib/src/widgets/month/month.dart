@@ -26,7 +26,7 @@ class Month extends StatelessWidget {
   Widget build(BuildContext context) {
     var startOfWeeks = <DateTime>[];
     var startOfWeek = month.startOfWeek(weekParam.startOfWeekDay);
-    while (startOfWeek.add(Duration(days: 6)).month == month.month) {
+    while (startOfWeek.add(Duration(days: 7)).month == month.month) {
       startOfWeeks.add(startOfWeek);
       startOfWeek = startOfWeek.add(Duration(days: 7));
     }
