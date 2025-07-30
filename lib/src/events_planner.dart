@@ -141,6 +141,7 @@ class EventsPlannerState extends State<EventsPlanner> {
   late double width;
   late double height;
   late double dayWidth;
+  late double fullDragWidth;
   late int currentIndex;
   late EventsController _controller;
   late VoidCallback automaticScrollAdjustListener;
@@ -309,6 +310,9 @@ class EventsPlannerState extends State<EventsPlanner> {
 
         var leftWidget = widget.timesIndicatorsParam.timesIndicatorsWidth;
         dayWidth = (width - leftWidget) / widget.daysShowed;
+
+        final columnWidth = dayWidth * _getFirstColumnWidthRatio();
+        fullDragWidth = widget.columnsParam.columns * columnWidth;
 
         return Column(
           children: [
@@ -610,6 +614,14 @@ class EventsPlannerState extends State<EventsPlanner> {
       mainHorizontalController.jumpTo(index * dayWidth);
       listenHorizontalScrollDayChange = true;
     }
+  }
+
+  /// We assume all column widths are equal.
+  double _getFirstColumnWidthRatio(){
+    if(widget.columnsParam.columnsWidthRatio?.isNotEmpty ?? false) {
+      return widget.columnsParam.columnsWidthRatio![0];
+    }
+    return 1.0;
   }
 }
 
