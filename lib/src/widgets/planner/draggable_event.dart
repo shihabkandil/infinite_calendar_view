@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:developer';
 
 import '../../events/event.dart';
 import '../../events_planner.dart';
@@ -69,11 +70,11 @@ class DraggableEventWidget extends StatelessWidget {
         var relativeOffset = renderBox.globalToLocal(details.offset);
 
         // find day
-        var dayWidth = plannerState?.dayWidth ?? 0;
+        var fullDragWidth = plannerState?.fullDragWidth ?? 0;
         var heightPerMinute = plannerState?.heightPerMinute ?? 0;
         var scrollOffsetX = plannerState?.mainHorizontalController.offset ?? 0;
         var releaseOffsetX = scrollOffsetX + relativeOffset.dx;
-        var dayIndex = (releaseOffsetX / dayWidth).toInt();
+        var dayIndex = (releaseOffsetX / fullDragWidth).toInt();
         // adjust negative index, because current day begin 0 and negative begin -1
         var reallyDayIndex = releaseOffsetX >= 0 ? dayIndex : dayIndex - 1;
         var currentDay = plannerState?.initialDate
@@ -115,15 +116,24 @@ class DraggableEventWidget extends StatelessWidget {
           ),
         );
 
+
         // find column
-        var columnIndex = 0;
-        var dayPosition = (releaseOffsetX % dayWidth);
-        var columnsParam = plannerState?.widget.columnsParam;
-        if (columnsParam != null && columnsParam.columns > 0) {
-          for (var column = 0; column < columnsParam.columns; column++) {
-            var positions = columnsParam.getColumPositions(dayWidth, column);
-            if (positions[0] <= dayPosition && dayPosition <= positions[1]) {
-              columnIndex = column;
+        var dayWidth = plannerState?.dayWidth ?? 0;
+
+        final columnsParam = plannerState?.widget.columnsParam;
+
+        int columnIndex = 0;
+
+        if (dayWidth > 0 && columnsParam != null && columnsParam.columns > 0) {
+          final dayPosition = releaseOffsetX % fullDragWidth;
+
+          for (int i = 0; i < columnsParam.columns; i++) {
+            final positions = columnsParam.getColumPositions(dayWidth, i);
+            if (positions.length >= 2 &&
+                positions[0] <= dayPosition &&
+                dayPosition <= positions[1]) {
+              columnIndex = i;
+              break;
             }
           }
         }
