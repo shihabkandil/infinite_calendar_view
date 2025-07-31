@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'dart:developer';
 
 import '../../events/event.dart';
 import '../../events_planner.dart';

@@ -199,7 +199,7 @@ class DayWidget extends StatelessWidget {
             // time line indicator
             if (currentHourIndicatorParam.currentHourIndicatorLineVisibility)
               SizedBox(
-                width: width,
+                width: getWidthFromColumnsParams(width),
                 height: plannerHeight,
                 child: CustomPaint(
                   foregroundPainter: currentHourIndicatorParam
